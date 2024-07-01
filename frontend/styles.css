@@ -1,0 +1,18 @@
+/* Add your styles here */
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  #app {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+.section {
+    display: none;
+  }
+  
+.active {
+    display: block;
+  }

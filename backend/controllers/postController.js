@@ -1,13 +1,5 @@
+// backend/controllers/postController.js
 const Post = require("../models/postModel");
-
-exports.getAllPosts = async (req, res) => {
-	try {
-		const posts = await Post.find().populate("author", "username");
-		res.json(posts);
-	} catch (error) {
-		res.status(500).json({ error: error.message });
-	}
-};
 
 exports.createPost = async (req, res) => {
 	const { title, content } = req.body;
@@ -19,7 +11,16 @@ exports.createPost = async (req, res) => {
 	}
 };
 
-exports.getPostById = async (req, res) => {
+exports.getPosts = async (req, res) => {
+	try {
+		const posts = await Post.find().populate("author", "username");
+		res.status(200).json(posts);
+	} catch (error) {
+		res.status(400).json({ error: error.message });
+	}
+};
+
+exports.getPost = async (req, res) => {
 	try {
 		const post = await Post.findById(req.params.id).populate(
 			"author",
@@ -28,45 +29,28 @@ exports.getPostById = async (req, res) => {
 		if (!post) {
 			return res.status(404).json({ error: "Post not found" });
 		}
-		res.json(post);
+		res.status(200).json(post);
 	} catch (error) {
-		res.status(500).json({ error: error.message });
+		res.status(400).json({ error: error.message });
 	}
 };
 
 exports.updatePost = async (req, res) => {
-	const { title, content, published } = req.body;
 	try {
-		const post = await Post.findById(req.params.id);
-		if (!post) {
-			return res.status(404).json({ error: "Post not found" });
-		}
-		if (post.author.toString() !== req.user.id) {
-			return res.status(401).json({ error: "Not authorized" });
-		}
-		post.title = title || post.title;
-		post.content = content || post.content;
-		post.published =
-			typeof published !== "undefined" ? published : post.published;
-		await post.save();
-		res.json(post);
+		const post = await Post.findByIdAndUpdate(req.params.id, req.body, {
+			new: true,
+		});
+		res.status(200).json(post);
 	} catch (error) {
-		res.status(500).json({ error: error.message });
+		res.status(400).json({ error: error.message });
 	}
 };
 
 exports.deletePost = async (req, res) => {
 	try {
-		const post = await Post.findById(req.params.id);
-		if (!post) {
-			return res.status(404).json({ error: "Post not found" });
-		}
-		if (post.author.toString() !== req.user.id) {
-			return res.status(401).json({ error: "Not authorized" });
-		}
-		await post.remove();
-		res.json({ message: "Post removed" });
+		await Post.findByIdAndDelete(req.params.id);
+		res.status(200).json({ message: "Post deleted" });
 	} catch (error) {
-		res.status(500).json({ error: error.message });
+		res.status(400).json({ error: error.message });
 	}
 };
