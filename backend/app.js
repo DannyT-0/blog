@@ -3,24 +3,25 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv");
-
-dotenv.config();
-
+const passport = require("./config/passport");
 const authRoutes = require("./routes/authRoutes");
 const postRoutes = require("./routes/postRoutes");
 const commentRoutes = require("./routes/commentRoutes");
+
+dotenv.config();
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(passport.initialize());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentRoutes);
 
 app.get("/", (req, res) => {
-	res.send("Hello World");
+	res.send("Welcome to the Blog API");
 });
 
 const PORT = process.env.PORT || 5000;

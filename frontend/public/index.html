@@ -1,23 +1,16 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Blog</title>
-		<!-- <style>
-			.section {
-				display: none;
-			}
-			.active {
-				display: block;
-			}
-		</style> -->
 		<link rel="stylesheet" href="styles.css" />
 	</head>
 	<body>
 		<nav>
 			<button id="home-btn">Home</button>
 			<button id="new-post-btn">New Post</button>
+			<button id="login-btn">Login</button>
 		</nav>
 
 		<div id="home-section" class="section active">
@@ -47,30 +40,28 @@
 			</form>
 		</div>
 
-		<!-- <div id="edit-post-section" class="section">
-			<h1>Edit Post</h1>
-			<form id="edit-post-form">
-				<label for="edit-title">Title</label>
-				<input type="text" id="edit-title" name="title" required />
-				<label for="edit-content">Content</label>
-				<textarea id="edit-content" name="content" required></textarea>
-				<button type="submit">Update</button>
+		<script src="main.js"></script>
+	</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Blog Login</title>
+		<link rel="stylesheet" href="styles.css" />
+	</head>
+	<body>
+		<div class="container">
+			<form id="login-form">
+				<label for="email">Email</label>
+				<input type="email" id="email" required />
+				<label for="password">Password</label>
+				<input type="password" id="password" required />
+				<button type="submit">Login</button>
 			</form>
 		</div>
-
-		<div id="view-post-section" class="section">
-			<h1 id="post-title"></h1>
-			<p id="post-content"></p>
-			<button id="edit-post-btn">Edit Post</button>
-			<h2>Comments</h2>
-			<div id="comments"></div>
-			<form id="new-comment-form">
-				<label for="comment-content">Comment</label>
-				<textarea id="comment-content" name="content" required></textarea>
-				<button type="submit">Add Comment</button>
-			</form>
-		</div> -->
-
 		<script src="main.js"></script>
 	</body>
 </html>
