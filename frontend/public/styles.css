@@ -218,3 +218,12 @@ button:hover {
 #login-section.hidden {
   display: none;
 }
+
+.edit-title, .edit-content {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.edit-content {
+  height: 100px;
+}

@@ -10,6 +10,16 @@ router.get("/", async (req, res) => {
 	res.json(posts);
 });
 
+router.get("/:id", async (req, res) => {
+	try {
+		const post = await Post.findById(req.params.id);
+		if (!post) return res.status(404).json({ error: "Post not found" });
+		res.json(post);
+	} catch (error) {
+		res.status(400).json({ error: error.message });
+	}
+});
+
 router.post("/", protect, async (req, res) => {
 	const post = new Post({ ...req.body, author: req.user.id });
 	try {

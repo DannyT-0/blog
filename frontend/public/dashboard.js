@@ -63,16 +63,13 @@ async function fetchPosts() {
 function renderPost(post) {
 	const postElement = document.createElement("div");
 	postElement.className = "post";
+	postElement.dataset.postId = post._id;
 
 	const titleElement = document.createElement("h2");
 	titleElement.textContent = post.title;
 
 	const contentElement = document.createElement("p");
 	contentElement.textContent = `${post.content.substring(0, 100)}...`;
-
-	const viewButton = document.createElement("button");
-	viewButton.textContent = "View";
-	viewButton.addEventListener("click", () => viewPost(post._id));
 
 	const editButton = document.createElement("button");
 	editButton.textContent = "Edit";
@@ -84,68 +81,128 @@ function renderPost(post) {
 
 	postElement.appendChild(titleElement);
 	postElement.appendChild(contentElement);
-	postElement.appendChild(viewButton);
 	postElement.appendChild(editButton);
 	postElement.appendChild(deleteButton);
 
 	postsContainer.appendChild(postElement);
 }
 
-async function viewPost(id) {
-	try {
-		const response = await fetch(`http://localhost:5000/api/posts/${id}`, {
-			headers: {
-				Authorization: `Bearer ${localStorage.getItem("token")}`,
-			},
-		});
-		if (response.ok) {
-			const post = await response.json();
-			alert(`Title: ${post.title}\n\nContent: ${post.content}`);
-		} else {
-			console.error("Failed to fetch post");
-		}
-	} catch (error) {
-		console.error("Error:", error);
+function toggleEditMode(id) {
+	const postElement = document.querySelector(`.post[data-post-id="${id}"]`);
+	const titleElement = postElement.querySelector("h2");
+	const contentElement = postElement.querySelector("p");
+	const editButton = postElement.querySelector("button:nth-of-type(1)");
+
+	if (editButton.textContent === "Edit") {
+		// Switch to edit mode
+		const titleInput = document.createElement("input");
+		titleInput.value = titleElement.textContent;
+		titleInput.className = "edit-title";
+
+		const contentTextarea = document.createElement("textarea");
+		contentTextarea.value = contentElement.textContent;
+		contentTextarea.className = "edit-content";
+
+		const confirmButton = document.createElement("button");
+		confirmButton.textContent = "Confirm";
+		confirmButton.addEventListener("click", () => confirmEdit(id));
+
+		postElement.insertBefore(titleInput, titleElement);
+		postElement.insertBefore(contentTextarea, contentElement);
+		postElement.appendChild(confirmButton);
+
+		titleElement.style.display = "none";
+		contentElement.style.display = "none";
+		editButton.textContent = "Cancel";
+	} else {
+		// Cancel edit mode
+		const titleInput = postElement.querySelector(".edit-title");
+		const contentTextarea = postElement.querySelector(".edit-content");
+		const confirmButton = postElement.querySelector("button:nth-of-type(3)");
+
+		titleInput.remove();
+		contentTextarea.remove();
+		confirmButton.remove();
+
+		titleElement.style.display = "";
+		contentElement.style.display = "";
+		editButton.textContent = "Edit";
 	}
 }
 
-async function editPost(id) {
-	try {
-		console.log("Fetching post with ID:", id);
-		const response = await fetch(`http://localhost:5000/api/posts/${id}`, {
-			headers: {
-				Authorization: `Bearer ${localStorage.getItem("token")}`,
-			},
-		});
-		if (response.ok) {
-			const post = await response.json();
-			const newTitle = prompt("Enter new title:", post.title);
-			const newContent = prompt("Enter new content:", post.content);
-			if (newTitle && newContent) {
-				const updateResponse = await fetch(
-					`http://localhost:5000/api/posts/${id}`,
-					{
-						method: "PUT",
-						headers: {
-							"Content-Type": "application/json",
-							Authorization: `Bearer ${localStorage.getItem("token")}`,
-						},
-						body: JSON.stringify({ title: newTitle, content: newContent }),
-					}
-				);
-				if (updateResponse.ok) {
-					postsContainer.textContent = "";
-					fetchPosts();
-				} else {
-					console.error("Failed to update post");
+async function confirmEdit(id) {
+	const postElement = document.querySelector(`.post[data-post-id="${id}"]`);
+	const titleInput = postElement.querySelector(".edit-title");
+	const contentTextarea = postElement.querySelector(".edit-content");
+	const newTitle = titleInput.value;
+	const newContent = contentTextarea.value;
+
+	if (newTitle && newContent) {
+		try {
+			const updateResponse = await fetch(
+				`http://localhost:5000/api/posts/${id}`,
+				{
+					method: "PUT",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${localStorage.getItem("token")}`,
+					},
+					body: JSON.stringify({ title: newTitle, content: newContent }),
 				}
+			);
+			if (updateResponse.ok) {
+				postsContainer.textContent = "";
+				fetchPosts();
+			} else {
+				console.error("Failed to update post");
 			}
-		} else {
-			console.error("Failed to fetch post");
+		} catch (error) {
+			console.error("Error:", error);
 		}
-	} catch (error) {
-		console.error("Error:", error);
 	}
+}
+
+// async function editPost(id) {
+// 	try {
+// 		console.log("Fetching post with ID:", id);
+// 		const response = await fetch(`http://localhost:5000/api/posts/${id}`, {
+// 			headers: {
+// 				Authorization: `Bearer ${localStorage.getItem("token")}`,
+// 			},
+// 		});
+// 		if (response.ok) {
+// 			const post = await response.json();
+// 			const newTitle = prompt("Enter new title:", post.title);
+// 			const newContent = prompt("Enter new content:", post.content);
+// 			if (newTitle && newContent) {
+// 				const updateResponse = await fetch(
+// 					`http://localhost:5000/api/posts/${id}`,
+// 					{
+// 						method: "PUT",
+// 						headers: {
+// 							"Content-Type": "application/json",
+// 							Authorization: `Bearer ${localStorage.getItem("token")}`,
+// 						},
+// 						body: JSON.stringify({ title: newTitle, content: newContent }),
+// 					}
+// 				);
+// 				if (updateResponse.ok) {
+// 					postsContainer.textContent = "";
+// 					fetchPosts();
+// 				} else {
+// 					console.error("Failed to update post");
+// 				}
+// 			}
+// 		} else {
+// 			console.error("Failed to fetch post");
+// 		}
+// 	} catch (error) {
+// 		console.error("Error:", error);
+// 	}
+// }
+
+function editPost(id) {
+	toggleEditMode(id);
 }
 
 async function deletePost(id) {
