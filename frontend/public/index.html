@@ -1,49 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Blog</title>
-		<link rel="stylesheet" href="styles.css" />
-	</head>
-	<body>
-		<nav>
-			<button id="home-btn">Home</button>
-			<button id="new-post-btn">New Post</button>
-			<button id="login-btn">Login</button>
-		</nav>
-
-		<div id="home-section" class="section active">
-			<h1>Blog Posts</h1>
-			<div id="posts"></div>
-		</div>
-
-		<div id="new-post-section" class="section">
-			<h1>Create New Post</h1>
-			<form id="new-post-form">
-				<label for="new-title">Title</label>
-				<input type="text" id="new-title" name="title" required />
-				<label for="new-content">Content</label>
-				<textarea id="new-content" name="content" required></textarea>
-				<button type="submit">Create</button>
-			</form>
-		</div>
-
-		<div id="login-section" class="section">
-			<h1>Login</h1>
-			<form id="login-form">
-				<label for="username">Username</label>
-				<input type="text" id="username" name="username" required />
-				<label for="password">Password</label>
-				<input type="password" id="password" name="password" required />
-				<button type="submit">Login</button>
-			</form>
-		</div>
-
-		<script src="main.js"></script>
-	</body>
-</html> -->
-
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -54,13 +8,33 @@
 	</head>
 	<body>
 		<div class="container">
-			<form id="login-form">
-				<label for="email">Email</label>
-				<input type="email" id="email" required />
-				<label for="password">Password</label>
-				<input type="password" id="password" required />
-				<button type="submit">Login</button>
-			</form>
+			<div id="login-section">
+				<h1>Login</h1>
+				<form id="login-form">
+					<label for="email">Email</label>
+					<input type="email" id="email" required />
+					<label for="password">Password</label>
+					<input type="password" id="password" required />
+					<button type="submit">Login</button>
+				</form>
+				<p>
+					Don't have an account? <a href="#" id="register-link">Register</a>
+				</p>
+			</div>
+
+			<div id="register-section" class="hidden">
+				<h1>Register</h1>
+				<form id="register-form">
+					<label for="reg-username">Username</label>
+					<input type="text" id="reg-username" name="username" required />
+					<label for="reg-email">Email</label>
+					<input type="email" id="reg-email" name="email" required />
+					<label for="reg-password">Password</label>
+					<input type="password" id="reg-password" name="password" required />
+					<button type="submit">Register</button>
+				</form>
+				<p>Already have an account? <a href="#" id="login-link">Login</a></p>
+			</div>
 		</div>
 		<script src="main.js"></script>
 	</body>
