@@ -8,6 +8,7 @@ const authRoutes = require("./routes/authRoutes");
 const postRoutes = require("./routes/postRoutes");
 const commentRoutes = require("./routes/commentRoutes");
 const path = require("path");
+const fs = require("fs");
 
 dotenv.config();
 
