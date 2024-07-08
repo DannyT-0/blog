@@ -7,6 +7,7 @@ const passport = require("./config/passport");
 const authRoutes = require("./routes/authRoutes");
 const postRoutes = require("./routes/postRoutes");
 const commentRoutes = require("./routes/commentRoutes");
+const path = require("path");
 
 dotenv.config();
 
