@@ -26,22 +26,14 @@ console.log("Current directory:", process.cwd());
 console.log("__dirname:", __dirname);
 console.log("Contents of current directory:", fs.readdirSync(process.cwd()));
 
+// Try to read the public directory
 try {
 	console.log(
-		"Contents of backend directory:",
-		fs.readdirSync(path.join(process.cwd(), "backend"))
+		"Contents of public directory:",
+		fs.readdirSync(path.join(__dirname, "public"))
 	);
 } catch (error) {
-	console.error("Error reading backend directory:", error);
-}
-
-try {
-	console.log(
-		"Contents of frontend directory:",
-		fs.readdirSync(path.join(process.cwd(), "frontend"))
-	);
-} catch (error) {
-	console.error("Error reading frontend directory:", error);
+	console.error("Error reading public directory:", error);
 }
 
 // Serve static files from the 'frontend/public' directory
@@ -57,9 +49,13 @@ app.get("/dashboard", (req, res) => {
 	res.sendFile(path.join(__dirname, "public", "dashboard.html"));
 });
 
-// For single-page applications or other routes, serve index.html
 app.get("*", (req, res) => {
-	res.sendFile(path.join(__dirname, "public", "index.html"));
+	res.sendFile(path.join(__dirname, "public", "index.html"), (err) => {
+		if (err) {
+			console.error("Error sending file:", err);
+			res.status(500).send("Error loading page");
+		}
+	});
 });
 
 const PORT = process.env.PORT || 5000;
