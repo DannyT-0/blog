@@ -21,6 +21,28 @@ app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentRoutes);
 
+console.log("Current directory:", process.cwd());
+console.log("__dirname:", __dirname);
+console.log("Contents of current directory:", fs.readdirSync(process.cwd()));
+
+try {
+	console.log(
+		"Contents of backend directory:",
+		fs.readdirSync(path.join(process.cwd(), "backend"))
+	);
+} catch (error) {
+	console.error("Error reading backend directory:", error);
+}
+
+try {
+	console.log(
+		"Contents of frontend directory:",
+		fs.readdirSync(path.join(process.cwd(), "frontend"))
+	);
+} catch (error) {
+	console.error("Error reading frontend directory:", error);
+}
+
 // Serve static files from the 'frontend/public' directory
 app.use(express.static(path.join(__dirname, "..", "frontend", "public")));
 
