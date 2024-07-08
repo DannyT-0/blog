@@ -21,26 +21,24 @@ app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentRoutes);
 
-// app.get("/", (req, res) => {
-// 	res.send("Welcome to the Blog API");
-// });
-
 // Serve static files from the 'frontend/public' directory
-app.use(express.static(path.join(__dirname, "frontend", "public")));
+app.use(express.static(path.join(__dirname, "..", "frontend", "public")));
 
 // Serve index.html for the root route
 app.get("/", (req, res) => {
-	res.sendFile(path.join(__dirname, "frontend", "public", "index.html"));
+	res.sendFile(path.join(__dirname, "..", "frontend", "public", "index.html"));
 });
 
 // Serve dashboard.html for the /dashboard route
 app.get("/dashboard", (req, res) => {
-	res.sendFile(path.join(__dirname, "frontend", "public", "dashboard.html"));
+	res.sendFile(
+		path.join(__dirname, "..", "frontend", "public", "dashboard.html")
+	);
 });
 
 // For single-page applications or other routes, serve index.html
 app.get("*", (req, res) => {
-	res.sendFile(path.join(__dirname, "frontend", "public", "index.html"));
+	res.sendFile(path.join(__dirname, "..", "frontend", "public", "index.html"));
 });
 
 const PORT = process.env.PORT || 5000;
