@@ -21,9 +21,9 @@ app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentRoutes);
 
-app.get("/", (req, res) => {
-	res.send("Welcome to the Blog API");
-});
+// app.get("/", (req, res) => {
+// 	res.send("Welcome to the Blog API");
+// });
 
 // Serve static files from the 'frontend/public' directory
 app.use(express.static(path.join(__dirname, "frontend", "public")));
