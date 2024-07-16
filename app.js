@@ -1,4 +1,3 @@
-// backend/app.js
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -26,18 +25,19 @@ app.use(
 app.use(express.json());
 app.use(passport.initialize());
 
-// Serve static files from the 'frontend/public' directory
+// Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, "public")));
 
+// API routes
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentRoutes);
 
+// Logging for debugging
 console.log("Current directory:", process.cwd());
 console.log("__dirname:", __dirname);
 console.log("Contents of current directory:", fs.readdirSync(process.cwd()));
 
-// Try to read the public directory
 try {
 	console.log(
 		"Contents of public directory:",
@@ -47,16 +47,7 @@ try {
 	console.error("Error reading public directory:", error);
 }
 
-// Serve index.html for the root route
-app.get("/", (req, res) => {
-	res.sendFile(path.join(__dirname, "public", "index.html"));
-});
-
-// Serve dashboard.html for the /dashboard route
-app.get("/dashboard", (req, res) => {
-	res.sendFile(path.join(__dirname, "public", "dashboard.html"));
-});
-
+// Catch-all route for SPA
 app.get("*", (req, res) => {
 	res.sendFile(path.join(__dirname, "public", "index.html"), (err) => {
 		if (err) {
