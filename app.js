@@ -14,9 +14,20 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors());
+app.use(
+	cors({
+		origin: [
+			"http://localhost:3000",
+			"https://blog-production-e316.up.railway.app",
+		],
+		credentials: true,
+	})
+);
 app.use(express.json());
 app.use(passport.initialize());
+
+// Serve static files from the 'frontend/public' directory
+app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
@@ -35,9 +46,6 @@ try {
 } catch (error) {
 	console.error("Error reading public directory:", error);
 }
-
-// Serve static files from the 'frontend/public' directory
-app.use(express.static(path.join(__dirname, "public")));
 
 // Serve index.html for the root route
 app.get("/", (req, res) => {

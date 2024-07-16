@@ -1,5 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
-	const apiUrl = "http://localhost:5000/api";
+	const apiUrl =
+		window.location.hostname === "localhost"
+			? "http://localhost:5000/api"
+			: "https://blog-production-e316.up.railway.app/api";
 
 	// Function to handle user registration
 	async function registerUser(e) {
