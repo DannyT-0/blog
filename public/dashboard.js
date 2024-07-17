@@ -1,3 +1,8 @@
+const apiUrl =
+	window.location.hostname === "localhost"
+		? "http://localhost:5000/api"
+		: "https://blog-production-e316.up.railway.app/api";
+
 const logoutBtn = document.getElementById("logout-btn");
 const createPostBtn = document.getElementById("create-post-btn");
 const postForm = document.getElementById("post-form");
@@ -6,7 +11,7 @@ const postsContainer = document.getElementById("posts-container");
 
 logoutBtn.addEventListener("click", () => {
 	localStorage.removeItem("token");
-	window.location.href = "index.html"; // Redirect to login page
+	window.location.href = "index.html";
 });
 
 createPostBtn.addEventListener("click", () => {
@@ -18,7 +23,7 @@ submitPostBtn.addEventListener("click", async () => {
 	const content = document.getElementById("post-content").value;
 	if (title && content) {
 		try {
-			const response = await fetch("http://localhost:5000/api/posts", {
+			const response = await fetch(`${apiUrl}/posts`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -44,7 +49,7 @@ submitPostBtn.addEventListener("click", async () => {
 
 async function fetchPosts() {
 	try {
-		const response = await fetch("http://localhost:5000/api/posts", {
+		const response = await fetch(`${apiUrl}/posts`, {
 			headers: {
 				Authorization: `Bearer ${localStorage.getItem("token")}`,
 			},
@@ -139,17 +144,14 @@ async function confirmEdit(id) {
 
 	if (newTitle && newContent) {
 		try {
-			const updateResponse = await fetch(
-				`http://localhost:5000/api/posts/${id}`,
-				{
-					method: "PUT",
-					headers: {
-						"Content-Type": "application/json",
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
-					},
-					body: JSON.stringify({ title: newTitle, content: newContent }),
-				}
-			);
+			const updateResponse = await fetch(`${apiUrl}/posts/${id}`, {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${localStorage.getItem("token")}`,
+				},
+				body: JSON.stringify({ title: newTitle, content: newContent }),
+			});
 			if (updateResponse.ok) {
 				postsContainer.textContent = "";
 				fetchPosts();
@@ -162,45 +164,6 @@ async function confirmEdit(id) {
 	}
 }
 
-// async function editPost(id) {
-// 	try {
-// 		console.log("Fetching post with ID:", id);
-// 		const response = await fetch(`http://localhost:5000/api/posts/${id}`, {
-// 			headers: {
-// 				Authorization: `Bearer ${localStorage.getItem("token")}`,
-// 			},
-// 		});
-// 		if (response.ok) {
-// 			const post = await response.json();
-// 			const newTitle = prompt("Enter new title:", post.title);
-// 			const newContent = prompt("Enter new content:", post.content);
-// 			if (newTitle && newContent) {
-// 				const updateResponse = await fetch(
-// 					`http://localhost:5000/api/posts/${id}`,
-// 					{
-// 						method: "PUT",
-// 						headers: {
-// 							"Content-Type": "application/json",
-// 							Authorization: `Bearer ${localStorage.getItem("token")}`,
-// 						},
-// 						body: JSON.stringify({ title: newTitle, content: newContent }),
-// 					}
-// 				);
-// 				if (updateResponse.ok) {
-// 					postsContainer.textContent = "";
-// 					fetchPosts();
-// 				} else {
-// 					console.error("Failed to update post");
-// 				}
-// 			}
-// 		} else {
-// 			console.error("Failed to fetch post");
-// 		}
-// 	} catch (error) {
-// 		console.error("Error:", error);
-// 	}
-// }
-
 function editPost(id) {
 	toggleEditMode(id);
 }
@@ -208,7 +171,7 @@ function editPost(id) {
 async function deletePost(id) {
 	if (confirm("Are you sure you want to delete this post?")) {
 		try {
-			const response = await fetch(`http://localhost:5000/api/posts/${id}`, {
+			const response = await fetch(`${apiUrl}/posts/${id}`, {
 				method: "DELETE",
 				headers: {
 					Authorization: `Bearer ${localStorage.getItem("token")}`,

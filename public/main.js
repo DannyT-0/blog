@@ -28,14 +28,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 			if (res.ok) {
 				const { token } = JSON.parse(textResponse);
-				// const { token } = await res.json();
 				localStorage.setItem("token", token);
-				console.log("Registration successful");
 				console.log("Registration successful, redirecting to dashboard...");
-				window.location.href = "dashboard.html"; // Redirect to dashboard or another page
+				window.location.href = "dashboard.html";
 			} else {
 				console.log("registration failed:", textResponse);
-				const { error } = await res.json();
+				const { error } = JSON.parse(textResponse);
 				console.error("Registration failed:", error);
 				// Handle registration error (show message to user, clear form fields, etc.)
 			}
@@ -69,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 			const { token } = await response.json();
 			localStorage.setItem("token", token);
-			window.location.href = "dashboard.html"; // Redirect to dashboard or another page
+			window.location.href = "dashboard.html";
 		} catch (error) {
 			console.error("Login Error:", error.message);
 			// Handle login error (show message to user, clear form fields, etc.)
@@ -82,7 +80,6 @@ document.addEventListener("DOMContentLoaded", () => {
 		document.getElementById("login-section").classList.add("hidden");
 	}
 
-	// Show login section
 	function showLoginSection(e) {
 		e.preventDefault();
 		document.getElementById("login-section").classList.remove("hidden");
