@@ -1,4 +1,3 @@
-// backend/config/db.js
 const mongoose = require("mongoose");
 
 const connectDB = async () => {
@@ -7,11 +6,17 @@ const connectDB = async () => {
 			useNewUrlParser: true,
 			useUnifiedTopology: true,
 		});
-		console.log("MongoDB connected");
+		console.log("MongoDB connected successfully");
+		console.log(
+			"Connection string:",
+			process.env.MONGO_URI.replace(/\/\/.*@/, "//<credentials>@")
+		); // Log the connection string (hiding credentials)
 	} catch (err) {
-		console.error(err.message);
+		console.error("MongoDB connection error:", err);
 		process.exit(1);
 	}
 };
+
+module.log;
 
 module.exports = connectDB;
